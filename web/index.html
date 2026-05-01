@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>海啸之后</title>
+    <link rel="stylesheet" href="styles/book.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="topbar-tools">
+          <button class="icon-btn" id="tocButton" aria-label="目录">目</button>
+          <button class="icon-btn" id="fontButton" aria-label="设置字号">字</button>
+        </div>
+        <div class="topbar-title">
+          <span id="currentPart">海啸之后</span>
+          <strong id="currentTitle">电子书</strong>
+        </div>
+        <button class="icon-btn" id="themeButton" aria-label="切换夜间模式">月</button>
+      </header>
+
+      <main class="reader" id="reader" aria-live="polite">
+        <section class="page page-cover is-active" data-page="cover">
+          <img class="cover-image" src="assets/images/cover-bg.png" alt="海啸之后封面背景" />
+          <div class="cover-overlay">
+            <p class="cover-kicker">AI 之后，人类如何重新定义自己</p>
+            <h1>海啸之后</h1>
+            <p class="cover-author">Lincoln 著</p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="player">
+        <button class="play-btn" id="playButton" aria-label="播放听书">▶</button>
+        <div class="player-copy">
+          <span>听书模式</span>
+          <strong id="audioTitle">封面</strong>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </footer>
+
+      <button class="turn-btn turn-prev" id="prevButton" aria-label="上一页">‹</button>
+      <button class="turn-btn turn-next" id="nextButton" aria-label="下一页">›</button>
+
+      <aside class="toc-panel" id="tocPanel" aria-hidden="true">
+        <div class="toc-card">
+          <div class="toc-head">
+            <strong>目录</strong>
+            <button class="icon-btn" id="closeToc" aria-label="关闭目录">×</button>
+          </div>
+          <nav id="tocList"></nav>
+        </div>
+      </aside>
+
+      <aside class="font-panel" id="fontPanel" aria-hidden="true">
+        <div class="font-card">
+          <div class="toc-head">
+            <strong>字号</strong>
+            <button class="icon-btn" id="closeFont" aria-label="关闭字号设置">×</button>
+          </div>
+          <div class="font-options" role="group" aria-label="选择阅读字号">
+            <button type="button" data-font-size="small">小</button>
+            <button type="button" data-font-size="medium">标准</button>
+            <button type="button" data-font-size="large">大</button>
+            <button type="button" data-font-size="xlarge">特大</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <script src="data/book.js"></script>
+    <script src="scripts/book.js"></script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "created_at": 1777565462,
+  "model": "doubao-seedream-4-5-251128",
+  "api_url": "https://ark.cn-beijing.volces.com/api/v3/images/generations",
+  "paths": [
+    "visual/outputs/interior/interior_prologue_low_tide/interior_prologue_low_tide-20260501-001009-v1-1.jpeg",
+    "visual/outputs/interior/interior_ch1_work_identity/interior_ch1_work_identity-20260501-001022-v1-1.jpeg",
+    "visual/outputs/interior/interior_act2_abundance/interior_act2_abundance-20260501-001034-v1-1.jpeg",
+    "visual/outputs/interior/interior_act3_handover/interior_act3_handover-20260501-001049-v1-1.jpeg"
+  ]
+}
