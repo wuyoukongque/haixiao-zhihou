@@ -185,7 +185,7 @@ function Reader({
       <footer style={{
         flex:'0 0 auto',
         display:'flex', justifyContent:'center', alignItems:'center', gap: 8,
-        padding: '6px 0 14px',
+        padding: '6px 0 calc(env(safe-area-inset-bottom) + 10px)',
         color:'var(--ink-3)'
       }}>
         <button onClick={prev} style={pillNav} aria-label="上一页"><Icons.Back size={14}/></button>
@@ -238,7 +238,7 @@ function PodcastFabContent() {
 const readerHeader = {
   flex:'0 0 auto',
   display:'grid', gridTemplateColumns:'40px 1fr 120px', alignItems:'center',
-  padding:'40px 18px 12px',
+  padding:'calc(env(safe-area-inset-top) + 14px) 18px 12px',
   background: 'color-mix(in oklab, var(--paper) 82%, transparent)',
   backdropFilter:'blur(10px) saturate(1.05)',
   borderBottom: '1px solid var(--hairline)',

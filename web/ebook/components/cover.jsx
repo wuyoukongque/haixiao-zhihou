@@ -50,7 +50,7 @@ function Cover({ onOpenBook, onOpenToc, hue }) {
       <header style={{
         position:'relative', zIndex: 2,
         display:'flex', justifyContent:'space-between', alignItems:'center',
-        padding:'42px 18px 0'
+        padding:'calc(env(safe-area-inset-top) + 16px) 18px 0'
       }}>
         <span style={{
           fontFamily:'var(--font-mono)', fontSize: 10, letterSpacing:'0.32em',
@@ -106,7 +106,7 @@ function Cover({ onOpenBook, onOpenToc, hue }) {
       {/* 主 CTA */}
       <div style={{
         position:'relative', zIndex: 2,
-        padding:'18px 20px 26px',
+        padding:'18px 20px calc(env(safe-area-inset-bottom) + 22px)',
         display:'grid', gridTemplateColumns:'1fr 1fr', gap: 10,
       }}>
         <button onClick={onOpenBook} style={primaryBtn}>

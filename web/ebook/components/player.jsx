@@ -154,7 +154,7 @@ function PodcastView({ playing, setPlaying, t, setT, onClose, speed, setSpeed })
       {/* 顶栏 */}
       <header style={{
         display:'grid', gridTemplateColumns:'40px 1fr 40px', alignItems:'center',
-        padding: '18px 22px',
+        padding: 'calc(env(safe-area-inset-top) + 14px) 22px 14px',
       }}>
         <button onClick={onClose} style={{ ...iconBtn, color:'inherit' }} aria-label="收起">
           <Icons.Collapse size={18}/>
@@ -230,7 +230,7 @@ function PodcastView({ playing, setPlaying, t, setT, onClose, speed, setSpeed })
       </div>
 
       {/* 进度条 + 控件 */}
-      <div style={{ padding:'10px 28px 26px', background:'transparent' }}>
+      <div style={{ padding:'10px 28px calc(env(safe-area-inset-bottom) + 20px)', background:'transparent' }}>
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Waveform progress={progress} bars={72} height={36}/>
           <div style={{ display:'flex', justifyContent:'space-between', fontFamily:'var(--font-mono)', fontSize: 11, opacity: 0.7, marginTop: 6 }}>

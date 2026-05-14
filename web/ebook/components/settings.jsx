@@ -27,7 +27,7 @@ function Settings({ open, onClose, settings, setSettings }) {
         position:'fixed', inset:0, zIndex: 35, background:'rgba(20,15,10,0.18)'
       }}/>
       <div style={{
-        position:'fixed', left: 12, right: 12, bottom: 12, zIndex: 36,
+        position:'fixed', left: 12, right: 12, bottom: 'calc(env(safe-area-inset-bottom) + 12px)', zIndex: 36,
         maxWidth: 480, margin: '0 auto',
         background:'var(--paper)',
         border:'1px solid var(--hairline)',

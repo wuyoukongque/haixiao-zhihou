@@ -20,7 +20,7 @@ function TOC({ onSelect, onClose, currentId }) {
         <button style={iconBtn} aria-label="搜索"><Icons.Search size={18}/></button>
       </header>
 
-      <div style={{ padding: '8px 24px 120px', maxWidth: 720, margin: '0 auto' }}>
+      <div style={{ padding: '8px 24px calc(env(safe-area-inset-bottom) + 80px)', maxWidth: 720, margin: '0 auto' }}>
         {/* 书本卡 */}
         <div style={{
           display:'flex', gap: 16, alignItems:'center',
@@ -108,7 +108,7 @@ function TOC({ onSelect, onClose, currentId }) {
 const tocHeader = {
   position: 'sticky', top: 0, zIndex: 10,
   display:'grid', gridTemplateColumns: '40px 1fr 40px', alignItems:'center',
-  padding: '40px 20px 12px',
+  padding: 'calc(env(safe-area-inset-top) + 14px) 20px 12px',
   background: 'color-mix(in oklab, var(--paper) 80%, transparent)',
   backdropFilter: 'blur(8px)',
   borderBottom: '1px solid var(--hairline)',

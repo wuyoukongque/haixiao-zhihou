@@ -118,34 +118,15 @@ function App() {
     </div>
   );
 
-  // ---- 设备外壳（手机模式给一个简单 frame） ----
+  // ---- 全屏渲染 ----
   return (
     <div style={{
-      minHeight:'100vh', width:'100%',
-      background: 'oklch(0.94 0.01 80)',
-      display:'grid', placeItems:'center',
-      padding: isMobile ? '24px 16px' : 0
+      height:'100dvh', width:'100%',
+      background:'var(--paper)',
+      position:'relative',
+      overflow:'hidden'
     }}>
-      {isMobile ? (
-        <div style={{
-          width: 'min(420px, 100%)',
-          height: 'min(880px, 92vh)',
-          background:'var(--paper)',
-          borderRadius: 38,
-          boxShadow: '0 30px 80px rgba(40,20,10,0.18), 0 0 0 12px oklch(0.18 0.01 60), 0 0 0 13px oklch(0.30 0.01 60)',
-          overflow:'hidden',
-          position:'relative'
-        }}>
-          {/* 顶部刘海 */}
-          <div style={{
-            position:'absolute', top: 8, left:'50%', transform:'translateX(-50%)',
-            width: 100, height: 26, background:'oklch(0.10 0.01 60)', borderRadius: 999, zIndex: 5
-          }}/>
-          {inner}
-        </div>
-      ) : (
-        <div style={{ width: '100%', minHeight: '100vh' }}>{inner}</div>
-      )}
+      {inner}
 
       {/* Tweaks */}
       <TweaksPanel title="Tweaks · 海啸 UI">
