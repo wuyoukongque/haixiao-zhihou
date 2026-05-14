@@ -17,6 +17,9 @@ const outPath = path.join(
 
 // id / file / part-label / chapter-number / display-title (for TOC)
 const TOC_SPEC = [
+  { part: "写在前面", chapters: [
+    { id: "pre", file: "自序-未来已来.md", n: "前", title: "未来已来" },
+  ]},
   { part: "序章 · 站上山顶", chapters: [
     { id: "p0", file: "序章-我们还没看远.md", n: "序", title: "我们还没看远" },
   ]},

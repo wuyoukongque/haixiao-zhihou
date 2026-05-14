@@ -21,7 +21,7 @@ function App() {
   // ---- 应用状态 ----
   // route: 'cover' | 'toc' | 'reader'
   const [route, setRoute] = React.useState('cover');
-  const [chapterId, setChapterId] = React.useState('p0');
+  const [chapterId, setChapterId] = React.useState('pre');
   const [pageIndex, setPageIndex] = React.useState(0);
   const [podcastOpen, setPodcastOpen] = React.useState(false);
   const [settingsOpen, setSettingsOpen] = React.useState(false);
@@ -63,7 +63,7 @@ function App() {
   };
 
   // ---- 路由处理 ----
-  const openBook = () => { setChapterId('p0'); setPageIndex(0); setRoute('reader'); };
+  const openBook = () => { setChapterId('pre'); setPageIndex(0); setRoute('reader'); };
   const openToc = () => setRoute('toc');
   const selectChapter = (id) => { setChapterId(id); setPageIndex(0); setRoute('reader'); };
   const onPageChange = (cid, idx) => { setChapterId(cid); setPageIndex(idx); window.scrollTo(0,0); };
