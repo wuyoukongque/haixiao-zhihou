@@ -16,7 +16,7 @@ function Settings({ open, onClose, settings, setSettings }) {
     { id: 'serif', label: '宋体 · 衬线', sample: '海啸',
       v: "'Source Han Serif SC','Songti SC','Noto Serif SC',Georgia,serif" },
     { id: 'kai',   label: '楷体',        sample: '海啸',
-      v: "'KaiTi','STKaiti','PingFang SC',serif" },
+      v: "'Kaiti SC','STKaiti','KaiTi','楷体-简','楷体','PingFang SC',serif" },
     { id: 'sans',  label: '无衬线',      sample: '海啸',
       v: "'PingFang SC','Hiragino Sans GB','Inter',system-ui,sans-serif" },
   ];

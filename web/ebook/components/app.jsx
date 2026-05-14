@@ -55,10 +55,10 @@ function App() {
     r.setAttribute('data-theme', settings.theme);
   }, [t.hue, t.paperTone, settings.theme]);
 
-  // 字体映射
+  // 字体映射（iOS 楷体真名是 "Kaiti SC"；其他系统按可用性回退）
   const families = {
     serif: "'Source Han Serif SC','Songti SC','Noto Serif SC',Georgia,serif",
-    kai:   "'KaiTi','STKaiti','PingFang SC',serif",
+    kai:   "'Kaiti SC','STKaiti','KaiTi','楷体-简','楷体','PingFang SC',serif",
     sans:  "'PingFang SC','Hiragino Sans GB','Inter',system-ui,sans-serif"
   };
 

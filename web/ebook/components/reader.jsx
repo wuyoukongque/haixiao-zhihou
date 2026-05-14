@@ -123,7 +123,9 @@ function Reader({
   const blocks = useMemo(() => flattenChapter(sourcePages), [chapterId]);
   const indents = useMemo(() => computeIndents(blocks), [blocks]);
 
-  const [pages, setPages] = useState(null); // null = 未测量
+  // pages 绑上 chapterId，避免切章瞬间 stale-pages 访问新 blocks 越界
+  const [pagesState, setPagesState] = useState({ chapterId: null, pages: null });
+  const pages = pagesState.chapterId === chapterId ? pagesState.pages : null;
   const [pageIdx, setPageIdx] = useState(0);
   const [paginateNonce, bumpPaginate] = useState(0);
   const mainRef = useRef(null);
@@ -133,7 +135,7 @@ function Reader({
     const main = mainRef.current;
     if (!main || main.clientHeight < 50) return;
     const newPages = paginate(main, blocks, indents);
-    setPages(newPages);
+    setPagesState({ chapterId, pages: newPages });
   }, [chapterId, bodySize, bodyLeading, bodyFamily, paginateNonce, blocks, indents]);
 
   // 章节切换 / 外部 pageIndex 变化 → 重置内部页码（'end' 表示末页）
