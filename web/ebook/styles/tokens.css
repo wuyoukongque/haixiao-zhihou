@@ -1,0 +1,125 @@
+/* =========================================================
+   海啸 · 电子书 UI · Design tokens
+   奶白主题 + 落日橙 + oklch 配色
+   ========================================================= */
+
+:root {
+  /* 主色（橙 — 落日色相，可通过 Tweaks 微调 hue） */
+  --hue: 45;
+  --accent:        oklch(0.68 0.14 var(--hue));
+  --accent-hover:  oklch(0.62 0.15 var(--hue));
+  --accent-soft:   oklch(0.93 0.04 var(--hue));
+  --accent-ink:    oklch(0.38 0.10 var(--hue));
+
+  /* 纸张色阶（背景 = 越大越奶白；越小越米黄） */
+  --paper-tone: 0.96;
+  --paper:         oklch(var(--paper-tone) 0.015 78);
+  --paper-2:       oklch(calc(var(--paper-tone) - 0.02) 0.018 78);
+  --paper-3:       oklch(calc(var(--paper-tone) - 0.04) 0.022 78);
+  --paper-edge:    oklch(calc(var(--paper-tone) - 0.08) 0.020 78);
+
+  /* 字 */
+  --ink:           oklch(0.24 0.02 60);
+  --ink-2:         oklch(0.40 0.02 60);
+  --ink-3:         oklch(0.56 0.02 60);
+  --ink-4:         oklch(0.72 0.018 60);
+  --hairline:      oklch(0.88 0.02 70);
+  --hairline-2:    oklch(0.82 0.02 70);
+
+  /* 字体（可被 Tweaks 覆盖） */
+  --font-ui:    'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-serif: 'Source Serif 4', 'Source Han Serif SC', 'Songti SC', 'STSong', 'Noto Serif SC', Georgia, serif;
+  --font-sans-cn: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+
+  /* 正文排印 */
+  --body-size: 18px;
+  --body-leading: 1.85;
+  --body-family: var(--font-serif);
+
+  /* 圆角 / 阴影 */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+  --shadow-soft: 0 1px 2px rgba(60, 40, 20, 0.04), 0 8px 24px rgba(60, 40, 20, 0.06);
+  --shadow-pop:  0 8px 30px rgba(60, 40, 20, 0.10), 0 2px 6px rgba(60, 40, 20, 0.06);
+  --shadow-deep: 0 24px 60px rgba(40, 20, 10, 0.18);
+}
+
+/* 主题：纸张（默认） */
+[data-theme="paper"] {
+  --paper-tone: 0.93;
+  --paper:         oklch(0.93 0.025 78);
+  --paper-2:       oklch(0.91 0.028 78);
+  --paper-3:       oklch(0.88 0.030 78);
+  --paper-edge:    oklch(0.83 0.028 78);
+  --ink:           oklch(0.26 0.025 55);
+}
+
+/* 主题：日间（奶白） */
+[data-theme="day"] {
+  --paper-tone: 0.965;
+  --paper:         oklch(0.965 0.012 80);
+  --paper-2:       oklch(0.945 0.014 80);
+  --paper-3:       oklch(0.92 0.016 80);
+  --paper-edge:    oklch(0.86 0.018 80);
+  --ink:           oklch(0.24 0.02 60);
+}
+
+/* 主题：夜间 */
+[data-theme="night"] {
+  --paper:         oklch(0.20 0.012 60);
+  --paper-2:       oklch(0.235 0.013 60);
+  --paper-3:       oklch(0.27 0.013 60);
+  --paper-edge:    oklch(0.34 0.014 60);
+  --ink:           oklch(0.90 0.012 80);
+  --ink-2:         oklch(0.76 0.012 80);
+  --ink-3:         oklch(0.60 0.012 80);
+  --ink-4:         oklch(0.45 0.012 80);
+  --hairline:      oklch(0.32 0.012 60);
+  --hairline-2:    oklch(0.40 0.012 60);
+  --accent-soft:   oklch(0.30 0.05 var(--hue));
+  --accent-ink:    oklch(0.85 0.10 var(--hue));
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button { font-family: inherit; cursor: pointer; }
+::selection { background: var(--accent-soft); color: var(--accent-ink); }
+
+/* 通用过渡 */
+.t-fade-enter { opacity: 0; }
+.t-fade-enter-active { opacity: 1; transition: opacity 320ms ease; }
+.t-fade-exit { opacity: 1; }
+.t-fade-exit-active { opacity: 0; transition: opacity 240ms ease; }
+
+/* 阅读页渐隐淡入（进场效果） */
+.page-fade { opacity: 1; }
+.reader-fade { opacity: 1; }
+
+/* 翻页：滑动 */
+.page-slide-r { animation: slideR 380ms cubic-bezier(.2,.6,.2,1) both; }
+.page-slide-l { animation: slideL 380ms cubic-bezier(.2,.6,.2,1) both; }
+@keyframes slideR { from { opacity: 0; transform: translateX(36px); } to { opacity: 1; transform: none; } }
+@keyframes slideL { from { opacity: 0; transform: translateX(-36px); } to { opacity: 1; transform: none; } }
+
+/* 翻页：仿真曲线 */
+.page-curl { animation: curl 520ms cubic-bezier(.2,.6,.2,1) both; transform-origin: left center; }
+@keyframes curl {
+  from { opacity: 0; transform: perspective(1400px) rotateY(-22deg) translateX(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* 滚动条（细 + 暖色） */
+.scroll-soft::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-soft::-webkit-scrollbar-thumb { background: var(--hairline-2); border-radius: 999px; }
+.scroll-soft::-webkit-scrollbar-track { background: transparent; }
