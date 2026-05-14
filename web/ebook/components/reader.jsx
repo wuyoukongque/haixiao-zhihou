@@ -98,8 +98,12 @@ function paginate(main, blocks, indents) {
   const pages = [[]];
   let cur = 0;
   for (let i = 0; i < blocks.length; i++) {
+    const b = blocks[i];
     const h = heights[i] || 0;
-    if (cur + h > maxH && pages[pages.length - 1].length > 0) {
+    const last = pages[pages.length - 1];
+    // 小节标题强制起新页；普通块按高度溢出切页
+    const forceBreak = b.kind === 'heading' && last.length > 0;
+    if ((forceBreak || cur + h > maxH) && last.length > 0) {
       pages.push([]);
       cur = 0;
     }
