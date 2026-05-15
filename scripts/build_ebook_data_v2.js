@@ -26,20 +26,19 @@ const TOC_SPEC = [
   { part: "第一幕 · 冲撞", chapters: [
     { id: "c1", file: "第一章-职业曾经存在过.md",   n: "01", title: "「职业」曾经存在过" },
     { id: "c2", file: "第二章-两种速度的撕裂.md",   n: "02", title: "两种速度的撕裂" },
-    { id: "c3", file: "第三章-不为工作的教育.md",   n: "03", title: "不为工作的教育" },
-    { id: "c4", file: "第四章-当人不再是原子.md",   n: "04", title: "当人不再是原子" },
+    { id: "c3", file: "第三章-学习不是为了工作.md", n: "03", title: "学习不是为了工作" },
+    { id: "c4", file: "第四章-超级组织与超级个体.md", n: "04", title: "超级组织与超级个体" },
   ]},
   { part: "第二幕 · 自由", chapters: [
-    { id: "c5", file: "第五章-第一次自由.md",       n: "05", title: "第一次自由" },
-    { id: "c6", file: "第六章-爱与归属.md",         n: "06", title: "爱与归属" },
-    { id: "c7", file: "第七章-活着的意义.md",       n: "07", title: "活着的意义" },
+    { id: "c5", file: "第五章-不再为生计奔波.md",   n: "05", title: "不再为生计奔波" },
+    { id: "c6", file: "第六章-需求的基座.md",       n: "06", title: "需求的基座" },
+    { id: "c7", file: "第七章-生而为人的意义.md",   n: "07", title: "生而为人的意义" },
   ]},
   { part: "第三幕 · 交接", chapters: [
     { id: "c8",  file: "第八章-思考的退化.md",      n: "08", title: "思考的退化" },
-    { id: "c9",  file: "第九章-溶解的边界.md",      n: "09", title: "溶解的边界" },
-    { id: "c10", file: "第十章-认知复利.md",        n: "10", title: "认知复利" },
-    { id: "c11", file: "第十一章-价值对齐.md",      n: "11", title: "价值对齐" },
-    { id: "c12", file: "第十二章-碳与硅.md",        n: "12", title: "碳与硅" },
+    { id: "c9",  file: "第九章-可能的永生.md",      n: "09", title: "可能的永生" },
+    { id: "c10", file: "第十章-人机必将一战吗.md",  n: "10", title: "人机必将一战吗" },
+    { id: "c11", file: "第十一章-碳与硅.md",        n: "11", title: "碳与硅" },
   ]},
   { part: "尾章 · 站在新土地上", chapters: [
     { id: "p13", file: "尾章-人类还没回答的那个问题.md", n: "尾", title: "人类还没回答的那个问题" },
@@ -55,6 +54,11 @@ function stripInline(s) {
 }
 
 function parseChapter(raw) {
+  // 手挑金句：<!-- pull: 这是金句 -->
+  const pullMatch = raw.match(/<!--\s*pull:\s*([\s\S]+?)\s*-->/);
+  const manualPull = pullMatch ? pullMatch[1].trim() : null;
+  raw = raw.replace(/<!--[\s\S]*?-->/g, "");
+
   const lines = raw.replace(/\r\n/g, "\n").split("\n");
   let title = "";
   const sections = []; // [{ heading, paragraphs:[{type, text}] }]
@@ -119,7 +123,7 @@ function parseChapter(raw) {
   }
   flushSection();
 
-  return { title, sections };
+  return { title, sections, manualPull };
 }
 
 // First sentence of first paragraph (Chinese 。 / 西文 .) — trim aggressively.
@@ -165,7 +169,8 @@ for (const group of TOC_SPEC) {
       title: parsed.title || ch.title,
       heading: section.heading || null,
       // Show pull quote only on the very first page of the chapter.
-      pull: i === 0 ? pullFromSection(section) : "",
+      // 优先用源文件里的 <!-- pull: ... --> 金句；否则回落到首句。
+      pull: i === 0 ? (parsed.manualPull || pullFromSection(section)) : "",
       body: section.paragraphs, // [{type:'p'|'quote', text}]
     }));
 
