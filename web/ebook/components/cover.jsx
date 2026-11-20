@@ -7,7 +7,7 @@
 function CoverArt({ src }) {
   // 给 TOC / 迷你播放器复用的小缩略图
   return (
-    window.BOOK.id === 'ai-native-enterprise' ? <div style={{position:'absolute',inset:0,overflow:'hidden'}}><div style={{transform:'scale(.28)',transformOrigin:'top left'}}><BookImage book={window.BOOK}/></div></div> : <img src={src || 'assets/book-cover-cropped.png'}
+    window.BOOK.id === 'ai-native-enterprise' ? <div style={{position:'absolute',inset:0,overflow:'hidden'}}><div style={{transform:'scale(.28)',transformOrigin:'top left'}}><BookImage book={window.BOOK}/></div></div> : <img src={src || 'assets/book-cover-preview.webp'}
          alt="书封"
          style={{
            position:'absolute', inset: 0, width:'100%', height:'100%',

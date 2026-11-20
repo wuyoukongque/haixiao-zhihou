@@ -1,5 +1,5 @@
 const BOOKS = [
-  {...window.BOOK, id:'haixiao-zhihou', edition:'在线阅读版', physicalCover:'assets/book-cover-cropped.png'},
+  {...window.BOOK, id:'haixiao-zhihou', edition:'在线阅读版', physicalCover:'assets/book-cover-preview.webp'},
   window.AI_NATIVE_BOOK
 ];
 function bookLink(id, hash='') {
@@ -12,7 +12,7 @@ function saveLocal(key, value) {
   try { localStorage.setItem(key, JSON.stringify(value)); } catch (_) {}
 }
 function BookImage({book}) {
-  if(book.physicalCover) return <img src={book.physicalCover} alt={book.title} className="shelf-cover-image"/>;
+  if(book.physicalCover) return <img src={book.physicalCover} alt={book.title} className="shelf-cover-image" loading="eager" fetchPriority="high"/>;
   return <div className="type-cover" role="img" aria-label={book.title+'：'+book.subtitle}>
     <span className="cover-imprint">MINDSLEAP 心智悦动</span>
     <span className="cover-book-title">成为<br/>AI原生<br/>企业</span>
