@@ -17,7 +17,7 @@ function TOC({ onSelect, onClose, currentId }) {
           <Icons.Back size={18}/>
         </button>
           <div style={{ fontFamily:'var(--font-serif)', fontSize: 14, color:'var(--ink-3)', letterSpacing:'0.16em', whiteSpace:'nowrap' }}>目录</div>
-        <button style={iconBtn} aria-label="搜索"><Icons.Search size={18}/></button>
+        <a href={location.pathname} aria-label="返回书架" style={{...iconBtn,textDecoration:'none'}}><Icons.Back size={18}/></a>
       </header>
 
       <div style={{ padding: '8px 24px calc(env(safe-area-inset-bottom) + 80px)', maxWidth: 720, margin: '0 auto' }}>
@@ -28,14 +28,14 @@ function TOC({ onSelect, onClose, currentId }) {
           background:'var(--paper-2)', borderRadius:'var(--r-md)',
           border: '1px solid var(--hairline)'
         }}>
-          <div style={{ width: 56, height: 84, borderRadius: 6, overflow:'hidden', position:'relative', boxShadow:'var(--shadow-soft)' }}>
+          <div style={{ width: 56, height: 84, flexShrink:0, borderRadius: 6, overflow:'hidden', position:'relative', boxShadow:'var(--shadow-soft)' }}>
             <CoverArt/>
           </div>
           <div style={{ flex:1, minWidth: 0 }}>
             <div style={{ fontFamily:'var(--font-serif)', fontSize: 22, color:'var(--ink)' }}>{B.title}</div>
             <div style={{ fontSize: 12, color:'var(--ink-3)', marginTop: 2, letterSpacing: '0.18em' }}>{B.subtitle}</div>
-            <div style={{ display:'flex', gap: 12, marginTop: 8, fontSize: 12, color:'var(--ink-3)', whiteSpace:'nowrap' }}>
-              <span>{totalChapters} 章</span><span>·</span><span>~{totalMinutes} 分钟</span><span>·</span><span>已读 {progressPct}%</span>
+            <div style={{ display:'flex', flexWrap:'wrap', gap: 8, marginTop: 8, fontSize: 12, color:'var(--ink-3)' }}>
+              <span>{B.meta?.totalChapters || totalChapters} 章</span><span>·</span><span>约 {totalMinutes} 分钟</span>
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@ function TOC({ onSelect, onClose, currentId }) {
                   <li key={ch.id}>
                     <button onClick={()=>onSelect(ch.id)} style={{
                       width:'100%', textAlign:'left',
-                      display:'grid', gridTemplateColumns:'auto 1fr auto', alignItems:'center', gap: 16,
+                      display:'grid', gridTemplateColumns:'40px minmax(0,1fr) auto', alignItems:'center', gap: 10,
                       padding: '14px 4px',
                       background:'transparent', border: 'none',
                       borderTop:'1px solid var(--hairline)',
@@ -68,7 +68,7 @@ function TOC({ onSelect, onClose, currentId }) {
                       cursor:'pointer'
                     }}>
                       <span style={{
-                        width: 28, fontFamily:'var(--font-mono)',
+                        width: 40, fontFamily:'var(--font-mono)',
                         fontSize: 12, color: active ? 'var(--accent)' : 'var(--ink-3)',
                         letterSpacing: '0.04em'
                       }}>{ch.n}</span>

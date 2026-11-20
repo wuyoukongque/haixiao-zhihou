@@ -3,12 +3,11 @@
    上：3D 实体书（封面图作为书面）
    下：开始阅读 按钮
    ========================================================= */
-const { useState } = React;
 
 function CoverArt({ src }) {
   // 给 TOC / 迷你播放器复用的小缩略图
   return (
-    <img src={src || 'assets/book-cover-cropped.png'}
+    window.BOOK.id === 'ai-native-enterprise' ? <div style={{position:'absolute',inset:0,overflow:'hidden'}}><div style={{transform:'scale(.28)',transformOrigin:'top left'}}><BookImage book={window.BOOK}/></div></div> : <img src={src || 'assets/book-cover-cropped.png'}
          alt="书封"
          style={{
            position:'absolute', inset: 0, width:'100%', height:'100%',
@@ -52,10 +51,7 @@ function Cover({ onOpenBook, onOpenToc, hue }) {
         display:'flex', justifyContent:'space-between', alignItems:'center',
         padding:'calc(env(safe-area-inset-top) + 16px) 18px 0'
       }}>
-        <span style={{
-          fontFamily:'var(--font-mono)', fontSize: 10, letterSpacing:'0.32em',
-          color:'var(--accent)', opacity: 0.85
-        }}>MINDSLEAP · 001</span>
+        <a href={location.pathname} className="book-home-link"><Icons.Back size={16}/>返回书架</a>
         <button onClick={onOpenToc} aria-label="目录" style={{
           width: 36, height: 36, borderRadius: 999,
           background:'transparent', border:'1px solid var(--hairline-2)',
@@ -72,7 +68,7 @@ function Cover({ onOpenBook, onOpenToc, hue }) {
         textAlign:'center', marginTop: 22,
         fontSize: 11, letterSpacing:'0.22em', color:'var(--ink-3)'
       }}>
-        新 书 · 重 磅 上 架
+        {B.edition}
       </div>
 
       {/* 书 */}
@@ -81,7 +77,7 @@ function Cover({ onOpenBook, onOpenToc, hue }) {
         flex: 1, display:'flex', alignItems:'center', justifyContent:'center',
         padding: '20px 24px 8px',
       }}>
-        <PhysicalBook src="assets/book-cover-cropped.png"/>
+        <BookImage book={B}/>
       </div>
 
       {/* 书名信息 */}
