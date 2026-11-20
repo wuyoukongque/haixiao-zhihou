@@ -105,7 +105,8 @@ function paginate(main, blocks, indents) {
     const h = heights[i] || 0;
     const last = pages[pages.length - 1];
     // 小节标题强制起新页；普通块按高度溢出切页
-    const forceBreak = b.kind === 'heading' && last.length > 0;
+    const isFigure = block => block?.kind === 'html' && /^<figure\b/.test(block.html);
+    const forceBreak = last.length > 0 && (b.kind === 'heading' || isFigure(b) || isFigure(blocks[i-1]));
     if ((forceBreak || cur + h > maxH) && last.length > 0) {
       pages.push([]);
       cur = 0;
@@ -133,7 +134,6 @@ function Reader({
   // pages 绑上 chapterId，避免切章瞬间 stale-pages 访问新 blocks 越界
   const [pagesState, setPagesState] = useState({ chapterId: null, pages: null });
   const pages = pagesState.chapterId === chapterId ? pagesState.pages : null;
-  const [pageIdx, setPageIdx] = useState(0);
   const [paginateNonce, bumpPaginate] = useState(0);
   const mainRef = useRef(null);
 
@@ -145,12 +145,6 @@ function Reader({
     setPagesState({ chapterId, pages: newPages });
   }, [chapterId, bodySize, bodyLeading, bodyFamily, paginateNonce, blocks, indents]);
 
-  // 章节切换 / 外部 pageIndex 变化 → 重置内部页码（'end' 表示末页）
-  useEffect(() => {
-    if (!pages) return;
-    if (pageIndex === 'end') setPageIdx(pages.length - 1);
-    else setPageIdx(Math.max(0, Math.min(pageIndex | 0, pages.length - 1)));
-  }, [chapterId, pageIndex, pages]);
 
   // 字体加载完后重测一次（webfont 替换 fallback 后高度有微差）
   useEffect(() => {
@@ -182,7 +176,8 @@ function Reader({
   }, []);
 
   const totalPages = (pages && pages.length) || 1;
-  const safePage = Math.max(0, Math.min(pageIdx, totalPages - 1));
+  // Derive from the route so a newly selected chapter never inherits the old page.
+  const safePage = pageIndex === 'end' ? totalPages - 1 : Math.max(0, Math.min(pageIndex | 0, totalPages - 1));
   const currentIdxList = (pages && pages[safePage]) || [];
 
   useEffect(()=>{
