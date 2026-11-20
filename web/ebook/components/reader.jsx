@@ -13,13 +13,14 @@ function esc(s) {
 function flattenChapter(chapterPages) {
   const out = [];
   const first = chapterPages[0];
-  out.push({ kind: 'chapter-head', chapter: first.chapter, title: first.title });
+  out.push({ kind: 'chapter-head', chapter: first.chapter, title: first.title, label:first.label });
   if (first.pull) out.push({ kind: 'pull', text: first.pull });
   for (let i = 0; i < chapterPages.length; i++) {
     const sec = chapterPages[i];
     if (i > 0 && sec.heading) out.push({ kind: 'heading', text: sec.heading });
     for (const b of sec.body) {
-      if (b.type === 'quote') out.push({ kind: 'quote', text: b.text });
+      if (b.type === 'html') out.push({kind:'html',html:b.html});
+      else if (b.type === 'quote') out.push({ kind: 'quote', text: b.text });
       else out.push({ kind: 'p', text: b.text });
     }
   }
@@ -39,8 +40,9 @@ function computeIndents(blocks) {
 }
 
 function blockHTML(b, indent) {
+  if(b.kind === 'html') return `<div class="reader-rich">${b.html}</div>`;
   if (b.kind === 'chapter-head') {
-    return `<div class="rb-chapter-head"><div class="rb-chapter-no">CHAPTER ${esc(b.chapter)}</div><h1>${esc(b.title)}</h1><div class="rb-accent"></div></div>`;
+    return `<div class="rb-chapter-head"><div class="rb-chapter-no">${esc(b.label || 'CHAPTER '+b.chapter)}</div><h1>${esc(b.title)}</h1><div class="rb-accent"></div></div>`;
   }
   if (b.kind === 'pull')    return `<p class="rb-pull">&ldquo;${esc(b.text)}&rdquo;</p>`;
   if (b.kind === 'heading') return `<h2 class="rb-heading">${esc(b.text)}</h2>`;
@@ -49,10 +51,11 @@ function blockHTML(b, indent) {
 }
 
 function BlockView({ b, indent }) {
+  if(b.kind === 'html') return <div className="reader-rich" dangerouslySetInnerHTML={{__html:b.html}}/>;
   if (b.kind === 'chapter-head') {
     return (
       <div className="rb-chapter-head">
-        <div className="rb-chapter-no">CHAPTER {b.chapter}</div>
+        <div className="rb-chapter-no">{b.label || 'CHAPTER '+b.chapter}</div>
         <h1>{b.title}</h1>
         <div className="rb-accent"/>
       </div>
@@ -116,7 +119,7 @@ function paginate(main, blocks, indents) {
 function Reader({
   chapterId, pageIndex, onPageChange,
   onOpenToc, onBack, onOpenSettings, onOpenPodcast,
-  playerVisible, anim, bodySize, bodyLeading, bodyFamily, theme
+  playerVisible, anim, bodySize, bodyLeading, bodyFamily, theme, onVisiblePage
 }) {
   const B = window.BOOK;
   const sourcePages = B.chapterPages[chapterId] || B.chapterPages.c1;
@@ -182,6 +185,10 @@ function Reader({
   const safePage = Math.max(0, Math.min(pageIdx, totalPages - 1));
   const currentIdxList = (pages && pages[safePage]) || [];
 
+  useEffect(()=>{
+    if(pages) onVisiblePage?.(chapterId,safePage);
+  },[chapterId,safePage,pages]);
+
   const prev = () => {
     if (safePage > 0) setPageIdx(safePage - 1);
     else if (chapterIdx > 0) onPageChange(allChapters[chapterIdx - 1].id, 'end');
@@ -194,7 +201,8 @@ function Reader({
   // 键盘
   useEffect(() => {
     const h = (e) => {
-      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+      if(e.target.closest('button,input,select,textarea,[role="dialog"]')) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
       if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
     };
     window.addEventListener('keydown', h);
@@ -220,9 +228,9 @@ function Reader({
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.15, minWidth: 0 }}>
           <div style={{
             fontFamily: 'var(--font-serif)', fontSize: 13, color: 'var(--ink-2)',
-            letterSpacing: '0.04em', whiteSpace: 'nowrap'
+            letterSpacing: '0', textAlign:'center', overflowWrap:'anywhere'
           }}>
-            {B.title}<span style={{ color: 'var(--ink-4)', margin: '0 6px' }}>·</span>{/^\d+$/.test(ch?.n || '') ? `第 ${ch.n} 章` : `${ch?.n || ''}章`}
+            {B.title}<span style={{ color: 'var(--ink-4)', margin: '0 6px' }}>·</span>{ch?.label || (/^\d+$/.test(ch?.n || '') ? `第 ${ch.n} 章` : `${ch?.n || ''}章`)}
           </div>
           <div style={{ fontSize: 10.5, color: 'var(--ink-3)', marginTop: 2, letterSpacing: '0.16em', fontFamily: 'var(--font-mono)' }}>
             {safePage + 1} / {totalPages}
@@ -251,9 +259,9 @@ function Reader({
       <main
         ref={mainRef}
         key={`${chapterId}-${safePage}-${anim}`}
-        className={animClass}
+        className={'reader-body '+animClass}
         style={{
-          flex: 1, minHeight: 0, overflow: 'hidden',
+          flex: 1, minHeight: 0, overflowY: 'auto', overflowX:'hidden',
           width: '100%',
           maxWidth: 680, margin: '0 auto',
           padding: '20px 26px 20px',
@@ -268,9 +276,6 @@ function Reader({
         ))}
       </main>
 
-      {/* 翻页触发区 — 不可见 */}
-      <button aria-label="上一页" onClick={prev} style={{ ...edgeTap, left: 0 }}/>
-      <button aria-label="下一页" onClick={next} style={{ ...edgeTap, right: 0 }}/>
 
       {/* 底栏 */}
       <footer style={{
@@ -279,11 +284,11 @@ function Reader({
         padding: '6px 0 calc(env(safe-area-inset-bottom) + 10px)',
         color: 'var(--ink-3)'
       }}>
-        <button onClick={prev} style={pillNav} aria-label="上一页"><Icons.Back size={14}/></button>
+        <button disabled={safePage===0 && chapterIdx===0} onClick={prev} style={pillNav} aria-label="上一页"><Icons.Back size={14}/></button>
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-3)', minWidth: 70, textAlign: 'center' }}>
           {String(safePage + 1).padStart(2, '0')} / {String(totalPages).padStart(2, '0')}
         </span>
-        <button onClick={next} style={pillNav} aria-label="下一页"><Icons.Chevron size={14}/></button>
+        <button disabled={safePage===totalPages-1 && chapterIdx===allChapters.length-1} onClick={next} style={pillNav} aria-label="下一页"><Icons.Chevron size={14}/></button>
       </footer>
     </div>
   );
@@ -324,7 +329,7 @@ function PodcastFabContent() {
 
 const readerHeader = {
   flex: '0 0 auto',
-  display: 'grid', gridTemplateColumns: '40px 1fr 120px', alignItems: 'center',
+  display: 'grid', gridTemplateColumns: '36px minmax(0,1fr) 76px', alignItems: 'center',
   padding: 'calc(env(safe-area-inset-top) + 14px) 18px 12px',
   background: 'color-mix(in oklab, var(--paper) 82%, transparent)',
   backdropFilter: 'blur(10px) saturate(1.05)',

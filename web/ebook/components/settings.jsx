@@ -26,9 +26,9 @@ function Settings({ open, onClose, settings, setSettings }) {
       <div onClick={onClose} style={{
         position:'fixed', inset:0, zIndex: 35, background:'rgba(20,15,10,0.18)'
       }}/>
-      <div style={{
+      <div role="dialog" aria-label="阅读样式" aria-modal="true" style={{
         position:'fixed', left: 12, right: 12, bottom: 'calc(env(safe-area-inset-bottom) + 12px)', zIndex: 36,
-        maxWidth: 480, margin: '0 auto',
+        maxWidth: 480, maxHeight:'calc(100dvh - 24px)', overflowY:'auto', margin: '0 auto',
         background:'var(--paper)',
         border:'1px solid var(--hairline)',
         borderRadius:'var(--r-xl)',
@@ -44,12 +44,12 @@ function Settings({ open, onClose, settings, setSettings }) {
         {/* 字号 */}
         <SettingsRow label="字号" right={<span style={{ fontFamily:'var(--font-mono)', fontSize:12, color:'var(--ink-3)' }}>{settings.size}px</span>}>
           <div style={stepperWrap}>
-            <button style={stepper} onClick={()=>set('size', Math.max(14, settings.size-1))}><Icons.Minus size={16}/></button>
+            <button aria-label="缩小字号" style={stepper} onClick={()=>set('size', Math.max(14, settings.size-1))}><Icons.Minus size={16}/></button>
             <div style={{ flex: 1, position:'relative', height: 28 }}>
-              <input type="range" min="14" max="26" step="1" value={settings.size}
+              <input aria-label="正文字号" type="range" min="14" max="26" step="1" value={settings.size}
                      onChange={e=>set('size', +e.target.value)} style={range}/>
             </div>
-            <button style={stepper} onClick={()=>set('size', Math.min(26, settings.size+1))}><Icons.Plus size={16}/></button>
+            <button aria-label="放大字号" style={stepper} onClick={()=>set('size', Math.min(26, settings.size+1))}><Icons.Plus size={16}/></button>
           </div>
         </SettingsRow>
 
@@ -94,8 +94,8 @@ function Settings({ open, onClose, settings, setSettings }) {
               const active = settings.theme === t.id;
               return (
                 <button key={t.id} onClick={()=>set('theme', t.id)} style={{
-                  display:'flex', alignItems:'center', gap: 10,
-                  padding:'12px 12px', borderRadius:'var(--r-md)',
+                  display:'flex', flexWrap:'wrap', alignItems:'center', gap: 6,
+                  padding:'12px 8px', borderRadius:'var(--r-md)',
                   border: '1px solid ' + (active ? 'var(--accent)' : 'var(--hairline)'),
                   background: active ? 'var(--accent-soft)' : 'var(--paper-2)',
                   color: 'var(--ink)', cursor:'pointer'
@@ -112,7 +112,7 @@ function Settings({ open, onClose, settings, setSettings }) {
         </SettingsRow>
 
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop: 8, padding: '12px 4px 0', borderTop:'1px solid var(--hairline)' }}>
-          <div style={{ fontSize: 12, color:'var(--ink-3)' }}>该样式将应用到当前书本</div>
+          <div style={{ fontSize: 12, color:'var(--ink-3)' }}>阅读偏好</div>
           <button onClick={onClose} style={{
             background:'var(--accent)', color:'oklch(0.99 0.01 80)',
             border:'none', borderRadius:999, padding:'10px 18px', fontSize: 13, fontWeight: 600
