@@ -49,7 +49,7 @@ fs.mkdirSync(out,{recursive:true});
     if(id==='ai-native-enterprise' && units.length!==18)throw Error('Missing manuscript units');
     for(const unit of units){
       await page.goto(base+'?book='+id+'#'+unit+'/page-1');
-      await page.locator('.reader-body > *').first().waitFor();
+      await page.waitForFunction(cid=>document.querySelector('.reader-body h1')?.textContent===window.BOOK.chapterPages[cid][0].title,unit);
       if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw Error('Overflow '+id+' '+unit+' '+width);
       const text=await page.locator('.reader-body').innerText();
       if(!text.trim())throw Error('Blank chapter');
