@@ -190,11 +190,11 @@ function Reader({
   },[chapterId,safePage,pages]);
 
   const prev = () => {
-    if (safePage > 0) setPageIdx(safePage - 1);
+    if (safePage > 0) onPageChange(chapterId, safePage - 1);
     else if (chapterIdx > 0) onPageChange(allChapters[chapterIdx - 1].id, 'end');
   };
   const next = () => {
-    if (safePage < totalPages - 1) setPageIdx(safePage + 1);
+    if (safePage < totalPages - 1) onPageChange(chapterId, safePage + 1);
     else if (chapterIdx < allChapters.length - 1) onPageChange(allChapters[chapterIdx + 1].id, 0);
   };
 
