@@ -16,10 +16,13 @@ fs.mkdirSync(out,{recursive:true});
    await page.locator('.bookshelf article').first().waitFor();
    if(await page.locator('.bookshelf article').count()!==2)throw Error('Missing books');
    await page.waitForFunction(()=>Array.from(document.querySelectorAll('.bookshelf img')).every(i=>i.complete&&i.naturalWidth>0));
+   if(!(await page.locator('.bookshelf article').nth(1).locator('img').getAttribute('src')).endsWith('/cover-a.webp'))throw Error('Selected cover A missing');
    await page.screenshot({path:path.join(out,`shelf-${width}.png`),fullPage:true});
    for(const id of ['haixiao-zhihou','ai-native-enterprise']){
     await page.goto(base+'?book='+id+'#read');
     await page.locator('.reader-body > *').first().waitFor();
+    if(await page.locator('audio,video,button[aria-label="播客"],button[aria-label="播放"]').count())throw Error('Unexpected audio player');
+    if(await page.locator('script[src*="player.jsx"],script[src*="audio-sync"]').count())throw Error('Unexpected audio script');
     await page.waitForTimeout(200);
     const first=await page.evaluate(()=>window.BOOK.toc[0].chapters[0].id);
     await page.getByRole('button',{name:'下一页',exact:true}).click();
@@ -44,6 +47,7 @@ fs.mkdirSync(out,{recursive:true});
     await page.getByRole('button',{name:'日间',exact:true}).click();
     await page.getByRole('button',{name:'完成',exact:true}).click();
     await page.getByRole('button',{name:'目录',exact:true}).click();
+    await page.waitForFunction(()=>Array.from(document.querySelectorAll('img')).every(i=>i.complete&&i.naturalWidth>0));
     await page.screenshot({path:path.join(out,`${id}-toc-${width}.png`),fullPage:true});
     const units=await page.evaluate(()=>window.BOOK.toc.flatMap(p=>p.chapters).map(c=>c.id));
     if(id==='ai-native-enterprise' && units.length!==18)throw Error('Missing manuscript units');
@@ -55,6 +59,9 @@ fs.mkdirSync(out,{recursive:true});
       if(!text.trim())throw Error('Blank chapter');
     }
     await page.goto(base+'?book='+id);
+    await page.getByRole('button',{name:'开始阅读',exact:true}).waitFor();
+    await page.waitForFunction(()=>Array.from(document.querySelectorAll('img')).every(i=>i.complete&&i.naturalWidth>0));
+    await page.screenshot({path:path.join(out,`${id}-cover-${width}.png`),fullPage:true});
     await page.getByRole('link',{name:'返回书架',exact:true}).click();
     await page.locator('.bookshelf').waitFor();
    }

@@ -45,7 +45,7 @@ function App() {
       {state.route==='reader' && <Reader chapterId={state.chapterId} pageIndex={state.pageIndex}
         onPageChange={(id,page)=>navigate('reader',id,page)} onVisiblePage={recordPage}
         onOpenToc={()=>navigate('toc')} onBack={()=>navigate('cover')}
-        onOpenSettings={()=>setSettingsOpen(true)} playerVisible={false} anim="fade"
+        onOpenSettings={()=>setSettingsOpen(true)} anim="fade"
         bodySize={settings.size+'px'} bodyLeading={settings.leading} bodyFamily={families[settings.family]} theme={settings.theme} />}
       <Settings open={settingsOpen} onClose={()=>setSettingsOpen(false)} settings={settings} setSettings={setSettings}/>
     </div>
