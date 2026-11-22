@@ -119,8 +119,8 @@ function paginate(main, blocks, indents) {
 
 function Reader({
   chapterId, pageIndex, onPageChange,
-  onOpenToc, onBack, onOpenSettings, onOpenPodcast,
-  playerVisible, anim, bodySize, bodyLeading, bodyFamily, theme, onVisiblePage
+  onOpenToc, onBack, onOpenSettings,
+  anim, bodySize, bodyLeading, bodyFamily, theme, onVisiblePage
 }) {
   const B = window.BOOK;
   const sourcePages = B.chapterPages[chapterId] || B.chapterPages.c1;
@@ -232,19 +232,6 @@ function Reader({
           </div>
         </div>
         <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
-          {playerVisible && (
-            <button style={iconBtn} onClick={onOpenPodcast} aria-label="播客">
-              <span style={{ position: 'relative', display: 'inline-flex' }}>
-                <Icons.Headphone size={18}/>
-                <span style={{
-                  position: 'absolute', top: -2, right: -2,
-                  width: 6, height: 6, borderRadius: '50%',
-                  background: 'var(--accent)',
-                  boxShadow: '0 0 0 2px var(--paper)'
-                }}/>
-              </span>
-            </button>
-          )}
           <button style={iconBtn} onClick={onOpenSettings} aria-label="字号"><Icons.Aa size={18}/></button>
           <button style={iconBtn} onClick={onOpenToc} aria-label="目录"><Icons.Menu size={18}/></button>
         </div>
@@ -289,39 +276,6 @@ function Reader({
   );
 }
 
-function PodcastFabContent() {
-  return (
-    <>
-      <img src={window.BOOK.cover} alt="" style={{
-        position: 'absolute', inset: 0, width: '100%', height: '100%',
-        objectFit: 'cover', borderRadius: '50%'
-      }}/>
-      <span style={{
-        position: 'absolute', inset: 0, borderRadius: '50%',
-        background: 'rgba(0,0,0,0.35)'
-      }}/>
-      <span style={{
-        position: 'absolute', inset: -4, borderRadius: '50%',
-        border: '1.5px solid oklch(0.68 0.14 var(--hue) / 0.55)',
-        animation: 'pulse 2.2s ease-out infinite'
-      }}/>
-      <span style={{
-        position: 'absolute', inset: 0, display: 'grid', placeItems: 'center',
-        color: 'oklch(0.99 0.01 80)'
-      }}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M7 5v14l12-7z"/>
-        </svg>
-      </span>
-      <style>{`@keyframes pulse {
-        0% { transform: scale(1); opacity: 0.9; }
-        70% { transform: scale(1.25); opacity: 0; }
-        100% { transform: scale(1.25); opacity: 0; }
-      }`}</style>
-    </>
-  );
-}
-
 const readerHeader = {
   flex: '0 0 auto',
   display: 'grid', gridTemplateColumns: '36px minmax(0,1fr) 76px', alignItems: 'center',
@@ -345,4 +299,3 @@ const pillNav = {
 };
 
 window.Reader = Reader;
-window.PodcastFabContent = PodcastFabContent;

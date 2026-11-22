@@ -1,6 +1,6 @@
 const BOOKS = [
   {...window.BOOK, id:'haixiao-zhihou', edition:'在线阅读版', physicalCover:'assets/book-cover-preview.webp'},
-  window.AI_NATIVE_BOOK
+  {...window.AI_NATIVE_BOOK, physicalCover:'assets/ai-native/cover-a.webp'}
 ];
 function bookLink(id, hash='') {
   return window.location.pathname + '?book=' + encodeURIComponent(id) + hash;

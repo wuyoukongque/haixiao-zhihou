@@ -6,7 +6,7 @@
 - 正式域名：`https://book.mindsleap.ai`
 - Vercel 静态目录：`web/ebook`；沿用已有项目，不新建项目、不改域名归属。
 - 根地址显示两本书。`?book=haixiao-zhihou`、`?book=ai-native-enterprise` 分别打开书籍；`#toc` 打开目录，`#u1/page-1` 等锚点定位阅读位置。
-- 旧站的静态资源路径不变，原 `海啸.html` 文件保留。
+- 旧站的静态资源路径不变，原 `海啸.html` 跳转至 `?book=haixiao-zhihou`，保留章节和页码锚点，不再加载旧启动依赖。
 
 ## 内容边界
 
@@ -21,7 +21,7 @@
 沿用原阅读器按窗口分页；长于一屏的完整段落/表格允许页内滚动，避免截断。
 移除正式入口的开发 Tweaks 和仅模拟时间、尚无实际音源的播放器入口；其原开发文件未删除。
 React 18.3.1 和 Babel 7.29.0 在站内托管，沿用原固定版本与 SRI 校验。
-新书文字封面为在线阅读版临时封面，不代表正式出版封面。
+新书采用 Lincoln 于 2026-11-22 选定的 A 款“组织重构”封面，资源为 `assets/ai-native/cover-a.webp`；不代表正式出版封面定稿。
 
 ## 更新和验证
 
@@ -31,6 +31,7 @@ python3 scripts/import_ai_native_book.py /absolute/path/to/approved-v12.html
 python3 -m http.server 5188 --bind 127.0.0.1 --directory web/ebook
 # 测试依赖 Playwright。可用 PLAYWRIGHT_PATH 指向安装路径。
 node scripts/test_library.cjs
+node scripts/test_entrypoints.cjs
 ```
 
 发布前检查：两本书入口、全部阅读单元、字体/主题、刷新恢复、分书书签、图片、移动端和桌面横向溢出、旧书数据未变。
@@ -38,4 +39,4 @@ node scripts/test_library.cjs
 
 ## 视觉说明
 
-优先延续现有书籍阅读器的纸张、字体、颜色和控件；书架使用完整“MindsLeap 心智悦动”文字标识，不引入未经批准的联合标志。新书绿色文字封面用于与旧书蓝色封面区分。
+优先延续现有书籍阅读器的纸张、字体、颜色和控件；书架使用完整“MindsLeap 心智悦动”文字标识，不引入未经批准的联合标志。新书采用白底红黑 A 款封面，书架、书籍入口及目录缩略图保持一致。
